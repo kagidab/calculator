@@ -16,7 +16,7 @@ class Calculation {
     this.result.setAttribute("id", "result-calc" + inputNumber);
 
     this.resultContainer.setAttribute("class", "result");
-    this.number.setAttribute("class", "result");
+    this.number.setAttribute("class", "result number");
     this.result.setAttribute("class", "result");
 
     this.number.innerHTML = "[" + inputNumber + "]";
@@ -39,11 +39,19 @@ function newInput(){
   inputArray.push(new Calculation(numInputs++));
 }
 
+function test(input){
+  let index = Number(input.substring(1, input.length-1))
+  if(index < numInputs) return '(' + inputArray[index].result.innerHTML + ')';
+  return "NULL";
+}
+
 function calculate(form) {
-  let input = document.getElementById('input-' + form);
+  let input = document.getElementById('input-' + form).value;
   let result = document.getElementById('result-' + form);
+
+  fixed = input.replace(/\[[0-9]+\]/g, test)
   try {
-    result.innerHTML = Algebrite.run(input.value);
+    result.innerHTML = Algebrite.run(fixed);
   } catch(err) {
     result.innerHTML = err;
   }
